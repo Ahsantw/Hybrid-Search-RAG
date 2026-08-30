@@ -36,6 +36,37 @@ baseline-vs-agent evidence.
 Yes — see [REPRODUCTION.md](./REPRODUCTION.md) for full setup on a clean machine, including 
 the OpenVINO model (no gated Hugging Face download required).
 
+## Hot Take / Insights
+
+**Adding a "smarter" retrieval method can make a RAG system worse before it makes it 
+better — and the eval is what catches it, not intuition.**
+
+When we added hybrid search (BM25 + dense embeddings), the assumption was straightforward: 
+combining keyword matching with semantic search should only help, since it adds a signal 
+the dense-only baseline didn't have. Our first eval run proved that assumption wrong — the 
+hybrid retriever scored *lower* than the plain dense baseline (0.71 vs 0.79) on our 
+13-question set.
+
+The root cause wasn't the idea, it was the mechanics: at a small `k`, a single strong-but-wrong 
+BM25 keyword match could displace a correct dense-retrieved chunk purely because there wasn't 
+enough room in the candidate pool for both. On a small, well-embedded corpus like ours (12 
+documents), dense retrieval was already close to its ceiling, so BM25's contribution was more 
+noise than signal at low k. One case in particular (q05) flipped from a correct answer to a 
+false refusal because of this.
+
+**The lesson: widen the candidate pool before you fuse, don't just add more retrieval 
+signals and hope they average out.** Giving each sub-retriever more room (`fetch_k`) before 
+rank fusion fixed the regression and brought hybrid search back to near-parity with the 
+baseline (0.78 vs 0.79), while preserving hybrid search's real advantage on exact-match 
+queries (case numbers, citations) that dense embeddings alone tend to miss.
+
+**What this changes about how we'd build the next agent:** any component that's supposed 
+to "add a capability" needs a same-cases, same-eval comparison against the version without 
+it — not just a plausibility check — because the failure mode here (correct answer → false 
+refusal) is exactly the kind of confident-but-wrong result a user would never notice without 
+a ground-truth eval sitting underneath it. We also chose not to keep chasing the number past 
+that point: a follow-up attempt with more aggressive settings scored *worse* (0.76) and was 
+reverted rather than kept, since over-tuning to 13 questions is its own failure mode.
 
 # Retrieval-Augmented Generation (RAG)
 
