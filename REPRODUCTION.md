@@ -114,7 +114,7 @@ Expect **~15-30 seconds per answer** on CPU — this is inherent to running an 8
 python eval/run_eval.py
 ```
 
-This loads the LLM once, then runs all 13 cases in `eval/eval_cases.json` through both a baseline (plain dense FAISS) retriever and the current hybrid retriever, and writes `eval/results/{baseline,agent}_results.json` + `comparison_table.md`. It takes roughly **10-15 minutes** (26 LLM generations at ~20s each). To re-run just one side without touching the other's saved results:
+This loads the LLM once, then runs all 13 cases in `eval/eval_cases.json` through both a baseline (plain dense FAISS) retriever and the current hybrid retriever, and writes `eval/results/{baseline,agent}_results.json` + `comparison_table.md`, plus a per-question `retrieval → verification → answer` trace for each variant to `trajectories/eval/{baseline,agent}_trajectory.jsonl` (one JSON line per question, overwritten each run — useful for inspecting exactly which chunks were retrieved and why a verification verdict landed where it did). It takes roughly **10-15 minutes** (26 LLM generations at ~20s each). To re-run just one side without touching the other's saved results:
 
 ```bash
 python eval/run_eval.py --only agent

@@ -34,3 +34,22 @@ UPP Capital Investment LLC case
 2026-08-31 01:21:59,488 - backend - INFO - Loading vector store
 2026-08-31 01:21:59,490 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
 2026-08-31 01:22:05,367 - backend - INFO - Backend ready to serve requests
+2026-08-31 01:55:55,210 - test_verifier - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:58:42,665 - test_verifier - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 02:01:13,121 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-31 02:01:13,163 - backend - INFO - Loading LLM model
+2026-08-31 02:01:16,140 - backend - INFO - Loading vector store
+2026-08-31 02:01:16,143 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 02:01:21,466 - backend - INFO - Backend ready to serve requests
+2026-08-31 02:01:28,303 - backend - INFO - Question What percentage of costs was Foloosi ordered to pay in CFI 067/2025?
+2026-08-31 02:02:43,931 - backend - INFO - Answer  I don't know. The document does not specify the percentage of costs that Foloosi was ordered to pay. It only mentions that the Defendant (Foloosi) was awarded AED 70,000 in costs.
+2026-08-31 02:02:43,931 - backend - INFO - Verification {'verdict': 'unsupported', 'note': 'VERDICT: UNSUPPORTED\n    The document does not specify the percentage of costs, but it does mention a specific amount (AED 70,000) which implies a 100% payment of costs.'}
+2026-08-31 02:02:56,668 - backend - INFO - Question What was the outcome for Ohtli v Onora ARB 034/2025?
+2026-08-31 02:03:23,139 - backend - INFO - Answer  I don't have enough information to determine the outcome of the case Ohtli v Onora ARB 034/2025.
+2026-08-31 02:04:01,375 - backend - INFO - Verification {'verdict': 'supported', 'note': 'VERDICT: SUPPORTED\n     The draft answer accurately states that the outcome of the case Ohtli v Onora ARB 034/2025 is not mentioned in the provided source excerpts.'}
+2026-08-31 02:04:09,117 - backend - INFO - Question What was the outcome for Ohtli v Onora ARB 034/2025?
+2026-08-31 02:04:36,539 - backend - INFO - Answer  I don't have enough information to determine the outcome of the case Ohtli v Onora ARB 034/2025.
+2026-08-31 02:05:15,780 - backend - INFO - Verification {'verdict': 'supported', 'note': 'VERDICT: SUPPORTED\n     The draft answer accurately states that the outcome of the case Ohtli v Onora ARB 034/2025 is not mentioned in the provided source excerpts.'}
+2026-08-31 02:10:27,860 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 03:59:02,591 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 04:04:04,548 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2

@@ -1,10 +1,14 @@
 {
   "aggregate": {
     "avg_overall_score": 0.782051282051282,
-    "avg_response_time_seconds": 21.619190509502705,
+    "avg_response_time_seconds": 48.95552504979647,
     "avg_keyword_score": 0.5277777777777778,
     "avg_source_score": 1.0,
     "avg_refusal_score": 1.0,
+    "verdict_counts": {
+      "supported": 10,
+      "unsupported": 3
+    },
     "num_cases": 13
   },
   "cases": [
@@ -28,7 +32,7 @@
           "page": "3"
         }
       ],
-      "response_time_seconds": 23.554179668426514,
+      "response_time_seconds": 43.495940923690796,
       "scores": {
         "keyword_score": 0.0,
         "keyword_hits": [],
@@ -37,6 +41,10 @@
           "03b621728"
         ],
         "overall_score": 0.5
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The appeal was refused, as stated in the Order of the Court of Appeal dated January 13, 2026."
       }
     },
     {
@@ -59,7 +67,7 @@
           "page": "5"
         }
       ],
-      "response_time_seconds": 21.447622776031494,
+      "response_time_seconds": 48.232916831970215,
       "scores": {
         "keyword_score": 0.5,
         "keyword_hits": [
@@ -70,6 +78,10 @@
           "03b621728"
         ],
         "overall_score": 0.75
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The Court ordered the Claimant (LXT Real Estate Broker) to pay AED 70,000 in costs to the Defendant within 14 days of the date of the order."
       }
     },
     {
@@ -92,7 +104,7 @@
           "page": "2"
         }
       ],
-      "response_time_seconds": 18.0257670879364,
+      "response_time_seconds": 39.793200969696045,
       "scores": {
         "keyword_score": 0.0,
         "keyword_hits": [],
@@ -101,6 +113,10 @@
           "443e04bc1"
         ],
         "overall_score": 0.5
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The draft answer is fully and accurately supported by the source excerpts, specifically paragraph 6."
       }
     },
     {
@@ -123,7 +139,7 @@
           "page": "2"
         }
       ],
-      "response_time_seconds": 16.767534494400024,
+      "response_time_seconds": 38.928388833999634,
       "scores": {
         "keyword_score": 0.6666666666666666,
         "keyword_hits": [
@@ -135,6 +151,10 @@
           "58eae81bf"
         ],
         "overall_score": 0.8333333333333333
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\nThe draft answer accurately reflects the outcome of the case as stated in the source excerpts."
       }
     },
     {
@@ -157,7 +177,7 @@
           "page": "4"
         }
       ],
-      "response_time_seconds": 19.901756763458252,
+      "response_time_seconds": 43.99710536003113,
       "scores": {
         "keyword_score": 0.3333333333333333,
         "keyword_hits": [
@@ -168,6 +188,10 @@
           "6306079a1"
         ],
         "overall_score": 0.6666666666666666
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The Court explicitly stated that the Claimant was entitled to a refund of the Fee of AED 15,570."
       }
     },
     {
@@ -190,7 +214,7 @@
           "page": "1"
         }
       ],
-      "response_time_seconds": 21.457993984222412,
+      "response_time_seconds": 50.92970538139343,
       "scores": {
         "keyword_score": 1.0,
         "keyword_hits": [
@@ -202,6 +226,10 @@
           "897ab23ed"
         ],
         "overall_score": 1.0
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The draft answer is fully and accurately supported by the source excerpts, which state that the Court limited recovery to 80% of the total costs claimed and that the resulting amount was USD 155,879.50."
       }
     },
     {
@@ -224,7 +252,7 @@
           "page": "2"
         }
       ],
-      "response_time_seconds": 32.236441135406494,
+      "response_time_seconds": 59.13659620285034,
       "scores": {
         "keyword_score": 0.3333333333333333,
         "keyword_hits": [
@@ -235,6 +263,10 @@
           "3a574fc4f"
         ],
         "overall_score": 0.6666666666666666
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\nThe draft answer accurately summarizes the reasons given by the judge for refusing to grant an adjournment, which are explicitly stated in the source excerpts."
       }
     },
     {
@@ -257,7 +289,7 @@
           "page": "0"
         }
       ],
-      "response_time_seconds": 22.191400051116943,
+      "response_time_seconds": 51.64510488510132,
       "scores": {
         "keyword_score": 1.0,
         "keyword_hits": [
@@ -269,6 +301,10 @@
           "f4c4d051d"
         ],
         "overall_score": 1.0
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The draft answer accurately states the amount Oleta was owed for her September salary and the outcome of Onesimo's set-off claim for training costs, as per the Judgment excerpt."
       }
     },
     {
@@ -291,7 +327,7 @@
           "page": "1"
         }
       ],
-      "response_time_seconds": 23.94213843345642,
+      "response_time_seconds": 54.321829319000244,
       "scores": {
         "keyword_score": 1.0,
         "keyword_hits": [
@@ -303,6 +339,10 @@
           "6248961b6"
         ],
         "overall_score": 1.0
+      },
+      "verification": {
+        "verdict": "unsupported",
+        "note": "VERDICT: UNSUPPORTED\nThe Practice Direction No. 1 of 2025 is stated to have come into effect on 1 October 2025, but the judgment in this case was made on 19 September 2025, so it did not apply retrospectively."
       }
     },
     {
@@ -325,7 +365,7 @@
           "page": "4"
         }
       ],
-      "response_time_seconds": 20.231439352035522,
+      "response_time_seconds": 45.66407108306885,
       "scores": {
         "keyword_score": 1.0,
         "keyword_hits": [
@@ -337,6 +377,10 @@
           "78ffe994c"
         ],
         "overall_score": 1.0
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The draft answer accurately states the assessed cost amount and the interest rate as per the source excerpts."
       }
     },
     {
@@ -359,7 +403,7 @@
           "page": "1"
         }
       ],
-      "response_time_seconds": 18.42512035369873,
+      "response_time_seconds": 50.55699944496155,
       "scores": {
         "keyword_score": 0.0,
         "keyword_hits": [],
@@ -368,6 +412,10 @@
           "1b446e196"
         ],
         "overall_score": 0.5
+      },
+      "verification": {
+        "verdict": "unsupported",
+        "note": "VERDICT: UNSUPPORTED\n    The document states that the Permission to Appeal Application was \"seeking permission to appeal the Order\" and that a permission to appeal hearing was listed before the judge, but it does not mention the outcome of the application."
       }
     },
     {
@@ -390,7 +438,7 @@
           "page": "0"
         }
       ],
-      "response_time_seconds": 21.795713663101196,
+      "response_time_seconds": 57.93296766281128,
       "scores": {
         "keyword_score": 0.5,
         "keyword_hits": [
@@ -402,6 +450,10 @@
           "62930da3"
         ],
         "overall_score": 0.75
+      },
+      "verification": {
+        "verdict": "supported",
+        "note": "VERDICT: SUPPORTED\n    The amount is explicitly stated in the source excerpt TCD 001/2024 Architeriors Interior Design (L.L.C) v Emirates National Investment Co (L.L.C) dated January 29, 2026."
       }
     },
     {
@@ -424,10 +476,14 @@
           "page": "4"
         }
       ],
-      "response_time_seconds": 21.07236886024475,
+      "response_time_seconds": 51.7869987487793,
       "scores": {
         "refusal_score": 1.0,
         "overall_score": 1.0
+      },
+      "verification": {
+        "verdict": "unsupported",
+        "note": "VERDICT: UNSUPPORTED\n    The provided text does not mention a criminal trial against John Smith in the Dubai Court of Cassation at all."
       }
     }
   ]

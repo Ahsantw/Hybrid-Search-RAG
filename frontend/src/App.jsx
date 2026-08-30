@@ -24,6 +24,31 @@ function SourceList({ sources }) {
   )
 }
 
+const VERDICT_LABELS = {
+  supported: { icon: '✓', text: 'Verified against sources' },
+  ambiguous: { icon: '⚠', text: 'Multiple sources may apply' },
+  unsupported: { icon: '⚠', text: 'Could not verify this claim' },
+  unparsed: { icon: '?', text: 'Verification inconclusive' },
+}
+
+function VerificationBadge({ verification, verifying }) {
+  if (verifying) {
+    return <div className="verification verifying">Verifying answer against sources...</div>
+  }
+  if (!verification) return null
+
+  const label = VERDICT_LABELS[verification.verdict] || VERDICT_LABELS.unparsed
+  return (
+    <div className={`verification ${verification.verdict}`}>
+      <span className="verification-icon">{label.icon}</span>
+      <span>
+        {label.text}
+        {verification.note ? ` — ${verification.note}` : ''}
+      </span>
+    </div>
+  )
+}
+
 export default function App() {
   const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_KEY))
   const [messages, setMessages] = useState([INITIAL_MESSAGE])
@@ -73,12 +98,18 @@ export default function App() {
         onSources: (sources) => patchLastMessage({ sources }),
         onToken: (text) =>
           patchLastMessage((last) => ({ ...last, text: last.text + text })),
+        onStatus: (stage) => {
+          if (stage === 'verifying') patchLastMessage({ verifying: true })
+        },
+        onVerification: (verification) =>
+          patchLastMessage({ verification, verifying: false }),
         onDone: () => patchLastMessage({ streaming: false }),
         onError: (detail) =>
           patchLastMessage({
             text: `Sorry, something went wrong: ${detail}`,
             error: true,
             streaming: false,
+            verifying: false,
           }),
       })
     } catch (err) {
@@ -133,9 +164,10 @@ export default function App() {
                 <>
                   <p>
                     {m.text}
-                    {m.streaming && <span className="cursor" />}
+                    {m.streaming && !m.verifying && <span className="cursor" />}
                   </p>
                   <SourceList sources={m.sources} />
+                  <VerificationBadge verification={m.verification} verifying={m.verifying} />
                 </>
               )}
             </div>

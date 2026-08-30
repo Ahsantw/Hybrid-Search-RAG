@@ -4,7 +4,6 @@ optimum-intel==1.22.0
 nncf==2.15.0
 torch==2.6.0
 transformers==4.48.3
-optimum-neuron
 langchain_huggingface
 langchain_community
 langchain

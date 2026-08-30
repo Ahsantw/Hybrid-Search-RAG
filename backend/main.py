@@ -20,6 +20,7 @@ from pydantic import BaseModel
 from src.convert_llama_to_open import OpenVINOLLMLoader
 from src.log_setup import setup_logger
 from src.vector_db import PDFVectorStore
+from src.verifier import verify_answer
 from langchain_classic.prompts import PromptTemplate
 from langchain_classic.globals import set_verbose
 import yaml
@@ -107,10 +108,16 @@ class Source(BaseModel):
     page: str
 
 
+class Verification(BaseModel):
+    verdict: str
+    note: str
+
+
 class ChatResponse(BaseModel):
     answer: str
     sources: list[Source]
     response_time: float
+    verification: Verification
 
 
 def build_prompt(question: str):
@@ -129,7 +136,7 @@ def build_prompt(question: str):
     ]
     context = "\n\n".join(doc.page_content for doc in docs)
     prompt = PROMPT_TEMPLATE.format(context=context, question=question)
-    return prompt, sources
+    return prompt, sources, context
 
 
 @app.get("/api/health")
@@ -176,14 +183,21 @@ def chat(request: ChatRequest):
         raise HTTPException(status_code=503, detail="Model is still loading, please try again shortly.")
 
     logger.info(f"Question {question}")
-    prompt, sources = build_prompt(question)
+    prompt, sources, context = build_prompt(question)
 
     start = time.time()
     answer = llm_model.invoke(prompt)
+    verification = verify_answer(llm_model, question, answer, context)
     elapsed = time.time() - start
 
     logger.info(f"Answer {answer}")
-    return ChatResponse(answer=answer, sources=sources, response_time=elapsed)
+    logger.info(f"Verification {verification}")
+    return ChatResponse(
+        answer=answer,
+        sources=sources,
+        response_time=elapsed,
+        verification=Verification(**verification),
+    )
 
 
 def sse(event: str, data: dict) -> str:
@@ -201,7 +215,7 @@ def chat_stream(request: ChatRequest):
         raise HTTPException(status_code=503, detail="Model is still loading, please try again shortly.")
 
     logger.info(f"Question {question}")
-    prompt, sources = build_prompt(question)
+    prompt, sources, context = build_prompt(question)
 
     def event_stream():
         start = time.time()
@@ -219,8 +233,15 @@ def chat_stream(request: ChatRequest):
             yield sse("error", {"detail": "Generation failed. Please try again."})
             return
 
+        answer = "".join(answer_parts)
+        logger.info(f"Answer {answer}")
+
+        yield sse("status", {"stage": "verifying"})
+        verification = verify_answer(llm_model, question, answer, context)
+        logger.info(f"Verification {verification}")
+        yield sse("verification", verification)
+
         elapsed = time.time() - start
-        logger.info(f"Answer {''.join(answer_parts)}")
         yield sse("done", {"response_time": elapsed})
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")

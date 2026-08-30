@@ -1,6 +1,6 @@
 export class AuthError extends Error {}
 
-export async function streamChat(question, token, { onSources, onToken, onDone, onError }) {
+export async function streamChat(question, token, { onSources, onToken, onStatus, onVerification, onDone, onError }) {
   const res = await fetch('/api/chat/stream', {
     method: 'POST',
     headers: {
@@ -32,12 +32,12 @@ export async function streamChat(question, token, { onSources, onToken, onDone, 
     while ((sepIndex = buffer.indexOf('\n\n')) !== -1) {
       const rawEvent = buffer.slice(0, sepIndex)
       buffer = buffer.slice(sepIndex + 2)
-      dispatch(rawEvent, { onSources, onToken, onDone, onError })
+      dispatch(rawEvent, { onSources, onToken, onStatus, onVerification, onDone, onError })
     }
   }
 }
 
-function dispatch(rawEvent, { onSources, onToken, onDone, onError }) {
+function dispatch(rawEvent, { onSources, onToken, onStatus, onVerification, onDone, onError }) {
   const eventMatch = rawEvent.match(/^event: (.+)$/m)
   const dataMatch = rawEvent.match(/^data: (.+)$/m)
   if (!eventMatch || !dataMatch) return
@@ -47,6 +47,8 @@ function dispatch(rawEvent, { onSources, onToken, onDone, onError }) {
 
   if (event === 'sources') onSources?.(data.sources)
   else if (event === 'token') onToken?.(data.text)
+  else if (event === 'status') onStatus?.(data.stage)
+  else if (event === 'verification') onVerification?.(data)
   else if (event === 'done') onDone?.(data.response_time)
   else if (event === 'error') onError?.(data.detail)
 }

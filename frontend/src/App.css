@@ -11,6 +11,8 @@
   --assistant-bubble: #eef1f5;
   --assistant-text: #1c2027;
   --error: #b3261e;
+  --success: #1e7a3d;
+  --warning: #9a6700;
 }
 
 * {
@@ -145,6 +147,47 @@ body {
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   border: 1px solid rgba(31, 58, 95, 0.15);
+}
+
+.verification {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+}
+
+.verification.verifying {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.verification.supported {
+  background: rgba(30, 122, 61, 0.08);
+  color: var(--success);
+}
+
+.verification.ambiguous {
+  background: rgba(154, 103, 0, 0.1);
+  color: var(--warning);
+}
+
+.verification.unsupported {
+  background: rgba(179, 38, 30, 0.08);
+  color: var(--error);
+}
+
+.verification.unparsed {
+  background: rgba(107, 114, 128, 0.1);
+  color: var(--muted);
+}
+
+.verification-icon {
+  flex-shrink: 0;
+  font-weight: 700;
 }
 
 .typing-dots {

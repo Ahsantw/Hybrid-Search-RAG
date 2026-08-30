@@ -6,8 +6,9 @@ This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pip
 2. Convert the LLaMA model to OpenVINO INT4 format.
 3. If the model has already been converted, load the existing INT4 version directly from folder.
 4. Use a Sentence-Transformers embedding model to generate embeddings and store them using FAISS.
-5. Build a question-answering (QA) system using LangChain to complete the RAG pipeline.
+5. Build a question-answering (QA) system using LangChain, with hybrid retrieval (BM25 keyword search + FAISS dense embeddings via reciprocal rank fusion) and a second-pass answer verification check (`src/verifier.py`).
 6. Logs for all the steps are documented in all_logs folder. So very easy to debug any issues.
+7. An eval harness (`eval/run_eval.py`) scores this hybrid+verification pipeline against a frozen dense-only baseline on 13 grounded test questions — see [REPRODUCTION.md](REPRODUCTION.md#8-run-the-eval-harness-optional) and `eval/results/comparison_table.md`.
 > Setting this up on a new machine? See [REPRODUCTION.md](REPRODUCTION.md) for a complete step-by-step guide (CLI, web UI, and the eval harness).
 
 ### Installation
@@ -17,7 +18,7 @@ This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pip
 git clone https://github.com/Ahsantw/RAG
 cd RAG
 ```
-2. Install Python 3.10
+2. Install Python 3.12 (verified version — see [REPRODUCTION.md](REPRODUCTION.md) for details; 3.10/3.11 will likely work too but aren't verified)
 3. Install required Pakages
 ```
 pip install -r requirements.txt
@@ -53,25 +54,15 @@ python rag_cli.py
 Different parameters/variable can easily be change from [config](https://github.com/Ahsantw/RAG/blob/main/config/config.yaml) file.
 
 ### Sample Output
-The output includes a reference from the PDF, followed by the actual answer.
+The output includes a reference from the PDF(s), followed by the answer and a verification verdict (`src/verifier.py`). This repo currently ships 12 DIFC Courts case PDFs in `data/` (see `eval/eval_cases.json` for the question set they support), so output looks like this:
 ```
-Question ('exit'): whats procyon
- - Page 1, File: data/procyon_guide.pdf
- - Page 39, File: data/procyon_guide.pdf
- - Page 13, File: data/procyon_guide.pdf
-Answer:  UL Procyon is a suite of benchmark tests for professional users in various industries, designed to measure the performance of computers and devices.
-```
-```
-Question ('exit'): tell me what the context says about Benchmarks at the enterprise IT level
- - Page 0, File: data/procyon_guide.pdf
- - Page 0, File: data/procyon_guide.pdf
- - Page 41, File: data/procyon_guide.pdf
-Answer:  Benchmarks at the enterprise IT level support every stage in the life cycle of PC assets, easing PC lifecycle management for IT teams. They provide support for:
-
-• Planning and procurement: Simplify PC performance comparison and cost justification
-• Validation and standardization: Test and compare the performance of new PCs against user-defined baselines
-• Operations and management: Efficiently automate remote performance testing to provide reliable insights and reporting
-• Optimization or replacement: Make informed PC life-cycle decisions based on benchmark results stored in your central database
+Question ('exit'): In Oleta v Onesimo [2024] DIFC SCT 454, how much was Oleta owed for her September salary, and was Onesimo's set-off claim for training costs allowed?
+ - Page 1, File: data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf
+ - Page 2, File: data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf
+ - Page 0, File: data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf
+Answer: According to the Judgment, Oleta was owed AED 3,466.67 for her September salary, and Onesimo's set-off claim for training costs was denied.
+Verification: SUPPORTED - answer is backed by the source excerpts.
+Response Time: 51.6
 ```
 
 ### Web UI (Backend + Frontend)
@@ -91,7 +82,9 @@ cd frontend
 npm install
 npm run dev
 ```
-3. Open the URL Vite prints (default `http://127.0.0.1:5173`). The dev server proxies `/api/*` requests to the backend on port 8000.
+3. Open the URL Vite prints (default `http://127.0.0.1:5173`). The dev server proxies `/api/*` requests to the backend on port 8000. You'll be asked for the 4-digit PIN from `config/config.yaml` (`auth.pin`, default `1234`) before you can chat.
+
+Each answer is followed by a self-check pass (`src/verifier.py`) that flags whether the answer is actually supported by the retrieved sources — shown as a badge under the answer. This roughly doubles response time (a second full LLM call), and it's a coarse safety net rather than a guarantee: see the "Added — Answer verification" entry in `CHANGELOG.md` for what it reliably catches and what it doesn't.
 
 The vector DB and LLM must already be built/converted (steps above, or `bash run_demo.sh`) before starting the backend.
 
@@ -102,11 +95,13 @@ This RAG pipeline was tested successfully on the following system:
 - **OS**: Windows 10/ Ubuntu 22.04 (Tested on Both)
 - **Processor**: Intel Core i7 10th Gen
 - **RAM**: 32 GB
-- **GPU**: NVIDIA RTX 3090
 - **HardDrive**: 2TB
 
+The pipeline is CPU-only (`device=-1` is hardcoded in `src/convert_llama_to_open.py`) — no GPU is required or used, despite this machine also having one available.
+
 ### Latency
-- **Average response time:** 15-20 seconds
+- **Answer generation only:** ~15-20 seconds (this is what the numbers above were measured on, before the verification pass existed).
+- **With verification** (now always on in `rag_cli.py` and the web UI — a second full LLM call after each answer): roughly doubles to **~40-60 seconds** end-to-end. See `eval/results/comparison_table.md` for measured per-question timings (baseline avg ~21s without verification vs. agent avg ~49s with hybrid retrieval + verification).
 
 ### Common Issues
 1. HugginFace login issue.

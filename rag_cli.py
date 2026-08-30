@@ -1,6 +1,7 @@
 from src.convert_llama_to_open import OpenVINOLLMLoader
 from src.log_setup import setup_logger
 from src.vector_db import PDFVectorStore
+from src.verifier import verify_answer
 from langchain_classic.chains import RetrievalQA
 from langchain_classic.prompts import PromptTemplate
 from langchain_classic.globals import set_verbose
@@ -82,6 +83,12 @@ def main(logger):
 
         logger.info(f"Answer {answer}")
         print(f"Answer: {answer}")
+
+        context = "\n\n".join(doc.page_content for doc in result['source_documents'])
+        verification = verify_answer(llm_model, question, answer, context)
+        logger.info(f"Verification {verification}")
+        print(f"Verification: {verification['verdict'].upper()} - {verification['note']}")
+
         et = time.time()
         print('Response Time:',(et-st))
 

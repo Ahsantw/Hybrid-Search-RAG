@@ -17,10 +17,15 @@ retrieval quality):
 
   - agent: the current repo's hybrid retriever (PDFVectorStore.get_hybrid_retriever,
     BM25 + dense via reciprocal rank fusion) -- the actual improvement made
-    on top of the baseline.
+    on top of the baseline -- plus a verification pass (src/verifier.py) run
+    after each answer, checking it against the same retrieved context. This
+    is intentionally agent-only: baseline is a frozen reproduction of
+    baseline_code's behaviour, which never had verification, so it stays
+    exactly as-is rather than gaining a feature it never had.
 
 Both variants load the LLM and FAISS index once and share them, so only the
-retriever differs between the two RetrievalQA chains.
+retriever (and, for agent, the added verification pass) differs between the
+two RetrievalQA chains.
 
 Scoring is deterministic (keyword / source-file substring matching), not an
 LLM-judge, since no external grading model or API key is configured in this
@@ -39,11 +44,19 @@ import json
 import os
 import sys
 import time
+from datetime import datetime, timezone
 
 EVAL_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(EVAL_DIR)
 os.chdir(PROJECT_ROOT)
 sys.path.insert(0, PROJECT_ROOT)
+
+TRAJECTORIES_DIR = os.path.join(PROJECT_ROOT, "trajectories", "eval")
+
+# Retrieved chunk content is logged truncated to this many characters per chunk --
+# full page content for k=3-8 chunks across 13 questions would otherwise bloat the
+# trajectory file with text already recoverable from data/ via the (file, page) cite.
+TRAJECTORY_CHUNK_CHARS = 500
 
 import yaml
 from langchain_classic.chains import RetrievalQA
@@ -53,6 +66,7 @@ from langchain_classic.prompts import PromptTemplate
 from src.convert_llama_to_open import OpenVINOLLMLoader
 from src.log_setup import setup_logger
 from src.vector_db import PDFVectorStore
+from src.verifier import verify_answer
 
 set_verbose(False)
 logger = setup_logger("eval", "")
@@ -99,10 +113,10 @@ def build_chain(llm_model, retriever):
     )
 
 
-def run_case(chain, case):
-    start = time.time()
+def run_case(chain, case, llm_model=None, verify=False):
+    retrieval_start = time.time()
     result = chain.invoke(case["question"])
-    elapsed = time.time() - start
+    retrieval_elapsed = time.time() - retrieval_start
 
     answer = result["result"]
     sources = [
@@ -112,7 +126,39 @@ def run_case(chain, case):
         }
         for doc in result["source_documents"]
     ]
-    return answer, sources, elapsed
+    retrieved_chunks = [
+        {
+            "file": str(doc.metadata.get("source", "unknown")),
+            "page": str(doc.metadata.get("page", "N/A")),
+            "content": doc.page_content[:TRAJECTORY_CHUNK_CHARS],
+        }
+        for doc in result["source_documents"]
+    ]
+
+    verification = None
+    verification_elapsed = None
+    if verify:
+        context = "\n\n".join(doc.page_content for doc in result["source_documents"])
+        verify_start = time.time()
+        verification = verify_answer(llm_model, case["question"], answer, context)
+        verification_elapsed = time.time() - verify_start
+
+    elapsed = retrieval_elapsed + (verification_elapsed or 0.0)
+    trajectory = {
+        "retrieval": {
+            "num_chunks": len(retrieved_chunks),
+            "chunks": retrieved_chunks,
+            "elapsed_seconds": retrieval_elapsed,
+        },
+        "verification": (
+            {**verification, "elapsed_seconds": verification_elapsed} if verification else None
+        ),
+        "answer": {
+            "text": answer.strip(),
+            "elapsed_seconds": elapsed,
+        },
+    }
+    return answer, sources, elapsed, verification, trajectory
 
 
 def score_case(case, answer, sources):
@@ -148,27 +194,65 @@ def score_case(case, answer, sources):
     }
 
 
-def run_variant(name, chain, cases):
+def run_variant(name, chain, cases, llm_model=None, verify=False, run_timestamp=None):
     print(f"\n=== Running {name} ===")
     results = []
+    trajectories = []
     for case in cases:
         print(f"  [{name}] {case['id']}: {case['question'][:70]}...")
-        answer, sources, elapsed = run_case(chain, case)
+        answer, sources, elapsed, verification, trajectory = run_case(
+            chain, case, llm_model=llm_model, verify=verify
+        )
         scores = score_case(case, answer, sources)
-        results.append(
+        entry = {
+            "id": case["id"],
+            "category": case["category"],
+            "difficulty": case["difficulty"],
+            "question": case["question"],
+            "answer": answer.strip(),
+            "sources": sources,
+            "response_time_seconds": elapsed,
+            "scores": scores,
+        }
+        if verification is not None:
+            entry["verification"] = verification
+        results.append(entry)
+
+        trajectories.append(
             {
-                "id": case["id"],
+                "run_timestamp": run_timestamp,
+                "variant": name,
+                "case_id": case["id"],
                 "category": case["category"],
                 "difficulty": case["difficulty"],
                 "question": case["question"],
-                "answer": answer.strip(),
-                "sources": sources,
-                "response_time_seconds": elapsed,
+                "pipeline": trajectory,
                 "scores": scores,
             }
         )
-        print(f"    -> {elapsed:.1f}s, overall_score={scores['overall_score']:.2f}")
+
+        verdict_note = f", verdict={verification['verdict']}" if verification else ""
+        print(f"    -> {elapsed:.1f}s, overall_score={scores['overall_score']:.2f}{verdict_note}")
+
+    write_trajectories(name, trajectories)
     return results
+
+
+def write_trajectories(name, trajectories):
+    """
+    Writes one retrieval -> verification -> answer trajectory record per eval
+    question to trajectories/eval/{name}_trajectory.jsonl (one JSON object per
+    line), overwritten on each run of that variant -- same overwrite convention
+    as results/{name}_results.json. This is the raw per-question pipeline trace;
+    results/{name}_results.json + comparison_table.md remain the source for
+    aggregate scoring.
+    """
+    os.makedirs(TRAJECTORIES_DIR, exist_ok=True)
+    path = os.path.join(TRAJECTORIES_DIR, f"{name}_trajectory.jsonl")
+    with open(path, "w", encoding="utf-8") as f:
+        for record in trajectories:
+            f.write(json.dumps(record) + "\n")
+    print(f"  Trajectories written to {path}")
 
 
 def aggregate(results):
@@ -180,12 +264,20 @@ def aggregate(results):
     source_scores = [r["scores"]["source_score"] for r in results if r["scores"].get("source_score") is not None]
     refusal_scores = [r["scores"]["refusal_score"] for r in results if r["scores"].get("refusal_score") is not None]
 
+    verdict_counts = None
+    if any("verification" in r for r in results):
+        verdict_counts = {}
+        for r in results:
+            v = r.get("verification", {}).get("verdict", "unparsed")
+            verdict_counts[v] = verdict_counts.get(v, 0) + 1
+
     return {
         "avg_overall_score": avg_overall,
         "avg_response_time_seconds": avg_latency,
         "avg_keyword_score": (sum(keyword_scores) / len(keyword_scores)) if keyword_scores else None,
         "avg_source_score": (sum(source_scores) / len(source_scores)) if source_scores else None,
         "avg_refusal_score": (sum(refusal_scores) / len(refusal_scores)) if refusal_scores else None,
+        "verdict_counts": verdict_counts,
         "num_cases": n,
     }
 
@@ -210,7 +302,7 @@ def write_comparison_table(cases, baseline_results, agent_results, baseline_agg,
     )
 
     lines.append("## Summary\n")
-    lines.append("| Metric | Baseline (dense-only) | Agent (hybrid BM25+dense) |")
+    lines.append("| Metric | Baseline (dense-only) | Agent (hybrid BM25+dense + verification) |")
     lines.append("|---|---|---|")
     lines.append(f"| Avg overall score | {baseline_agg['avg_overall_score']:.2f} | {agent_agg['avg_overall_score']:.2f} |")
     if baseline_agg["avg_keyword_score"] is not None:
@@ -222,18 +314,35 @@ def write_comparison_table(cases, baseline_results, agent_results, baseline_agg,
     lines.append(f"| Avg response time (s) | {baseline_agg['avg_response_time_seconds']:.1f} | {agent_agg['avg_response_time_seconds']:.1f} |")
     lines.append(f"| Cases run | {baseline_agg['num_cases']} | {agent_agg['num_cases']} |")
     lines.append("")
+    lines.append(
+        "Baseline has no verification row/column below -- it's a frozen reproduction of "
+        "`baseline_code`'s behavior, which never had a verification pass, so it wasn't run "
+        "with one. Agent's `avg response time` now includes the verification pass "
+        "(a second full LLM call per question), which is why it's roughly double what it "
+        "was in the pre-verification run recorded earlier in this file's git history / "
+        "`CHANGELOG.md`.\n"
+    )
+
+    if agent_agg.get("verdict_counts"):
+        lines.append("### Agent verification verdict distribution\n")
+        lines.append("| Verdict | Count (of 13) |")
+        lines.append("|---|---|")
+        for verdict, count in sorted(agent_agg["verdict_counts"].items(), key=lambda kv: -kv[1]):
+            lines.append(f"| {verdict} | {count} |")
+        lines.append("")
 
     lines.append("## Per-case results\n")
-    lines.append("| ID | Difficulty | Question | Baseline score | Agent score | Baseline latency (s) | Agent latency (s) |")
-    lines.append("|---|---|---|---|---|---|---|")
+    lines.append("| ID | Difficulty | Question | Baseline score | Agent score | Agent verdict | Baseline latency (s) | Agent latency (s) |")
+    lines.append("|---|---|---|---|---|---|---|---|")
     for case in cases:
         cid = case["id"]
         b = by_id_baseline[cid]
         a = by_id_agent[cid]
         q_short = case["question"] if len(case["question"]) <= 90 else case["question"][:87] + "..."
+        verdict = a.get("verification", {}).get("verdict", "-")
         lines.append(
             f"| {cid} | {case['difficulty']} | {q_short} "
-            f"| {b['scores']['overall_score']:.2f} | {a['scores']['overall_score']:.2f} "
+            f"| {b['scores']['overall_score']:.2f} | {a['scores']['overall_score']:.2f} | {verdict} "
             f"| {b['response_time_seconds']:.1f} | {a['response_time_seconds']:.1f} |"
         )
     lines.append("")
@@ -246,12 +355,15 @@ def write_comparison_table(cases, baseline_results, agent_results, baseline_agg,
             "`TCD 001/2024` has two separate cost orders (AED 60,000 and AED 44,000) issued on "
             "different dates. This case checks whether each system's retrieval step actually pulls "
             "chunks from *both* same-named documents, and whether generation distinguishes them "
-            "instead of confidently reporting a single wrong figure.\n"
+            "instead of confidently reporting a single wrong figure -- and now, whether verification "
+            "catches an unflagged conflation after the fact.\n"
         )
         lines.append(f"- Baseline sources returned: {hard_case_baseline['sources']}")
         lines.append(f"- Baseline answer: {hard_case_baseline['answer']}")
         lines.append(f"- Agent sources returned: {hard_case['sources']}")
         lines.append(f"- Agent answer: {hard_case['answer']}")
+        if "verification" in hard_case:
+            lines.append(f"- Agent verification: {hard_case['verification']}")
         lines.append("")
 
     with open(out_path, "w", encoding="utf-8") as f:
@@ -288,6 +400,8 @@ def main():
     results_dir = os.path.join(EVAL_DIR, "results")
     os.makedirs(results_dir, exist_ok=True)
 
+    run_timestamp = datetime.now(timezone.utc).isoformat()
+
     run_baseline = args.only in (None, "baseline")
     run_agent = args.only in (None, "agent")
 
@@ -306,7 +420,9 @@ def main():
     if run_baseline:
         baseline_retriever = db.as_retriever(search_kwargs={"k": config["k"]})
         baseline_chain = build_chain(llm_model, baseline_retriever)
-        baseline_results = run_variant("baseline", baseline_chain, cases)
+        baseline_results = run_variant(
+            "baseline", baseline_chain, cases, run_timestamp=run_timestamp
+        )  # no verification: baseline never had this feature
         baseline_agg = aggregate(baseline_results)
         with open(os.path.join(results_dir, "baseline_results.json"), "w", encoding="utf-8") as f:
             json.dump({"aggregate": baseline_agg, "cases": baseline_results}, f, indent=2)
@@ -323,7 +439,9 @@ def main():
             fetch_k=config["hybrid_fetch_k"],
         )
         agent_chain = build_chain(llm_model, agent_retriever)
-        agent_results = run_variant("agent", agent_chain, cases)
+        agent_results = run_variant(
+            "agent", agent_chain, cases, llm_model=llm_model, verify=True, run_timestamp=run_timestamp
+        )
         agent_agg = aggregate(agent_results)
         with open(os.path.join(results_dir, "agent_results.json"), "w", encoding="utf-8") as f:
             json.dump({"aggregate": agent_agg, "cases": agent_results}, f, indent=2)
