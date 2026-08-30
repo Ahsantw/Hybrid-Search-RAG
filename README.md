@@ -1,98 +1,134 @@
+# Retrieval-Augmented Generation (RAG) — Hybrid Search + Verification
+
+This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pipeline for
+answering questions over legal case PDFs, evolved from a simple dense-retrieval baseline into
+an agentic pipeline with hybrid retrieval and answer verification.
+
 ## Problem & User
 
 **Who has this problem?**
-Lawyers and legal teams — in this case, working with DIFC Courts case documents — deal with 
-large volumes of dense legal PDFs: case files, judgments, cost orders, and filings that can 
-run into hundreds of pages across dozens of documents. Finding a specific fact (a claim 
-number, a cost order amount, a ruling detail) means manually searching or skimming through 
+Lawyers and legal teams — in this case, working with DIFC Courts case documents — deal with
+large volumes of dense legal PDFs: case files, judgments, cost orders, and filings that can
+run into hundreds of pages across dozens of documents. Finding a specific fact (a claim
+number, a cost order amount, a ruling detail) means manually searching or skimming through
 these documents case by case.
 
 **What's the bottleneck?**
 Three things make this genuinely hard to solve with an off-the-shelf tool:
 
-- **Volume** — a single matter can span many long PDFs, and the relevant fact could be 
-  buried on any page of any document. Manual search doesn't scale, and it's easy to miss or 
+- **Volume** — a single matter can span many long PDFs, and the relevant fact could be
+  buried on any page of any document. Manual search doesn't scale, and it's easy to miss or
   misattribute similar-sounding cases (e.g., two cost orders under the same case name).
-- **Cost** — most AI solutions rely on paid third-party APIs charged per query. For a firm 
-  running hundreds of lookups a day, that adds up fast. This solution runs entirely on local 
+- **Cost** — most AI solutions rely on paid third-party APIs charged per query. For a firm
+  running hundreds of lookups a day, that adds up fast. This solution runs entirely on local
   CPU using an OpenVINO-optimized model, so there's no per-query API cost.
-- **Privacy** — legal documents are confidential. Sending case files to a third-party API is 
-  often a non-starter for client confidentiality and data-handling obligations. This solution 
-  is fully in-house: the model, the retrieval index, and the documents never leave the local 
+- **Privacy** — legal documents are confidential. Sending case files to a third-party API is
+  often a non-starter for client confidentiality and data-handling obligations. This solution
+  is fully in-house: the model, the retrieval index, and the documents never leave the local
   machine.
 
 **Why it's worth solving**
-A lawyer or paralegal should be able to ask a plain-language question and get a fast, cited 
-answer pulled directly from the case documents — without paying per query, without sending 
-confidential filings to an external API, and without manually re-reading PDFs every time a 
+A lawyer or paralegal should be able to ask a plain-language question and get a fast, cited
+answer pulled directly from the case documents — without paying per query, without sending
+confidential filings to an external API, and without manually re-reading PDFs every time a
 question comes up.
 
 **Does the agent solve it well?**
-See [CHANGELOG.md](./CHANGELOG.md) for the full progression from a simple dense-retrieval 
-baseline to the current hybrid-search + verification pipeline, and [eval/](./eval/) for 
-baseline-vs-agent evidence.
+See [CHANGELOG.md](./CHANGELOG.md) for the full progression from a simple dense-retrieval
+baseline to the current hybrid-search + verification pipeline, and [eval/](./eval/) for
+baseline-vs-agent evidence (`eval/results/comparison_table.md`).
 
 **Can another person reproduce the result?**
-Yes — see [REPRODUCTION.md](./REPRODUCTION.md) for full setup on a clean machine, including 
-the OpenVINO model (no gated Hugging Face download required).
+Yes — see [REPRODUCTION.md](./REPRODUCTION.md) for full setup on a clean machine, including
+the OpenVINO model (no gated Hugging Face download required). Representative agent
+trajectories (retrieval → verification → answer, per question) are in
+[`trajectories/`](./trajectories/).
 
-# Retrieval-Augmented Generation (RAG)
-
-This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pipeline. Main features of this repository are:
+## Main Features
 
 1. Download the LLaMA model (meta-llama/Llama-3.1-8B-Instruct) from Hugging Face.
 2. Convert the LLaMA model to OpenVINO INT4 format.
 3. If the model has already been converted, load the existing INT4 version directly from folder.
 4. Use a Sentence-Transformers embedding model to generate embeddings and store them using FAISS.
 5. Build a question-answering (QA) system using LangChain, with hybrid retrieval (BM25 keyword search + FAISS dense embeddings via reciprocal rank fusion) and a second-pass answer verification check (`src/verifier.py`).
-6. Logs for all the steps are documented in all_logs folder. So very easy to debug any issues.
+6. Logs for all the steps are documented in the `all_logs` folder, making it easy to debug issues.
 7. An eval harness (`eval/run_eval.py`) scores this hybrid+verification pipeline against a frozen dense-only baseline on 13 grounded test questions — see [REPRODUCTION.md](REPRODUCTION.md#8-run-the-eval-harness-optional) and `eval/results/comparison_table.md`.
+
 > Setting this up on a new machine? See [REPRODUCTION.md](REPRODUCTION.md) for a complete step-by-step guide (CLI, web UI, and the eval harness).
 
-### Installation
+## Installation
 
 1. Clone the Repository
 ```
-git clone https://github.com/Ahsantw/RAG
-cd RAG
+git clone https://github.com/Ahsantw/Hybrid-Search-RAG
+cd Hybrid-Search-RAG
 ```
 2. Install Python 3.12 (verified version — see [REPRODUCTION.md](REPRODUCTION.md) for details; 3.10/3.11 will likely work too but aren't verified)
-3. Install required Pakages
+3. Install required packages
 ```
 pip install -r requirements.txt
 ```
-4. Log into to hugginface accout (optional if you do not have HF model i.e. meta-llama/Llama-3.1-8B-Instruct). You will be asked to paste [HF token](https://huggingface.co/docs/hub/en/security-tokens).
+4. Log into your Hugging Face account (optional if you already have the converted OpenVINO model — a copy is provided so this step and the HF gated-access request can be skipped entirely). If you do need it: you'll be asked to paste an [HF token](https://huggingface.co/docs/hub/en/security-tokens).
 ```
 huggingface-cli login
 ```
+
 ### Model
 
-This repository uses OpenVINO INT4 version of Llama-3.1-8B-Instruct model during inference.
+This repository uses the OpenVINO INT4 version of the Llama-3.1-8B-Instruct model during inference. A pre-converted copy is provided so the conversion/download step can be skipped — see [REPRODUCTION.md](REPRODUCTION.md) for where to place it.
 
-### Full Pipeline Inference
-All steps are done with one command. At the end when all steps are done, you can easly type questions.
-```
-bash run_demo.sh
-```
-Different parameters/variable can easily be change from [config](https://github.com/Ahsantw/RAG/blob/main/config/config.yaml) file.
+## Running the Baseline vs. the Final Agent
 
-### Step by Step Inference
-1. Download and Convert llama Model.
+This repo keeps the original, unmodified baseline alongside the final agentic pipeline so both can be run and compared on the same cases.
+
+- **Baseline** (dense-only FAISS retrieval, no verification — the original starting point):
 ```
-python src/convert_llama_to_open.py
+python baseline_code/rag_cli.py
 ```
-2. Store pdf's embeding using Faiss.
-```
-python src/vector_db.py
-```
-3. Answer with reference for queries.
+- **Final agent** (hybrid BM25 + dense retrieval, with answer verification):
 ```
 python rag_cli.py
 ```
-Different parameters/variable can easily be change from [config](https://github.com/Ahsantw/RAG/blob/main/config/config.yaml) file.
+
+Both read from the same config (`config/config.yaml`) and the same document set (`data/`). To
+reproduce the full baseline-vs-agent comparison with scored results, run the eval harness (see
+below) rather than comparing single runs by eye.
+
+### Full Pipeline Inference (agent version)
+All steps are done with one command. At the end, you can type questions directly.
+```
+bash run_demo.sh
+```
+Different parameters/variables can easily be changed from the [config](./config/config.yaml) file.
+
+### Step by Step Inference
+1. Download and convert the Llama model (skip if using the provided pre-converted model).
+```
+python src/convert_llama_to_open.py
+```
+2. Store PDF embeddings using FAISS.
+```
+python src/vector_db.py
+```
+3. Answer with reference for queries (final agent: hybrid retrieval + verification).
+```
+python rag_cli.py
+```
+Different parameters/variables can easily be changed from the [config](./config/config.yaml) file.
+
+### Eval Harness (baseline vs. agent, scored)
+```
+python eval/run_eval.py
+```
+Runs both the baseline and the agent on the same 13 test cases (`eval/eval_cases.json`) and
+writes scored results to `eval/results/`. Use `--only baseline` or `--only agent` to re-run
+just one variant without touching the other's saved results. Per-question trajectories
+(retrieval → verification → answer) are written to `trajectories/eval/`.
 
 ### Sample Output
-The output includes a reference from the PDF(s), followed by the answer and a verification verdict (`src/verifier.py`). This repo currently ships 12 DIFC Courts case PDFs in `data/` (see `eval/eval_cases.json` for the question set they support), so output looks like this:
+The output includes references from the PDF(s), the answer, and a verification verdict
+(`src/verifier.py`). This repo ships 12 DIFC Courts case PDFs in `data/` (see
+`eval/eval_cases.json` for the question set they support):
 ```
 Question ('exit'): In Oleta v Onesimo [2024] DIFC SCT 454, how much was Oleta owed for her September salary, and was Onesimo's set-off claim for training costs allowed?
  - Page 1, File: data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf
@@ -103,7 +139,7 @@ Verification: SUPPORTED - answer is backed by the source excerpts.
 Response Time: 51.6
 ```
 
-### Web UI (Backend + Frontend)
+## Web UI (Backend + Frontend)
 
 The same RAG pipeline is also available as a web app so users can ask questions from a browser instead of the terminal.
 
@@ -126,61 +162,74 @@ Each answer is followed by a self-check pass (`src/verifier.py`) that flags whet
 
 The vector DB and LLM must already be built/converted (steps above, or `bash run_demo.sh`) before starting the backend.
 
-### Hardware Specs.
+## Hardware Specs
 
 This RAG pipeline was tested successfully on the following system:
 
-- **OS**: Windows 10/ Ubuntu 22.04 (Tested on Both)
+- **OS**: Windows 10 / Ubuntu 22.04 (tested on both)
 - **Processor**: Intel Core i7 10th Gen
 - **RAM**: 32 GB
 - **HardDrive**: 2TB
 
 The pipeline is CPU-only (`device=-1` is hardcoded in `src/convert_llama_to_open.py`) — no GPU is required or used, despite this machine also having one available.
 
-### Latency
-- **Answer generation only:** ~15-20 seconds (this is what the numbers above were measured on, before the verification pass existed).
-- **With verification** (now always on in `rag_cli.py` and the web UI — a second full LLM call after each answer): roughly doubles to **~40-60 seconds** end-to-end. See `eval/results/comparison_table.md` for measured per-question timings (baseline avg ~21s without verification vs. agent avg ~49s with hybrid retrieval + verification).
+## Latency
 
-### Common Issues
-1. HugginFace login issue.
+- **Answer generation only:** ~15-20 seconds (baseline, no verification).
+- **With verification** (always on in `rag_cli.py` and the web UI — a second full LLM call after each answer): roughly doubles to **~40-60 seconds** end-to-end. See `eval/results/comparison_table.md` for measured per-question timings (baseline avg ~21s without verification vs. agent avg ~49s with hybrid retrieval + verification).
+
+## Common Issues
+
+1. Hugging Face login issue.
 ```
 Failed to Run the pipeline : You are trying to access a gated repo.
 Make sure to have access to it at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
 ```
-Solution: Go to huggingface [page](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) and request model's access by completing and submitting the form. It takes few minutes and they grant you access.
-Then login to your hugginface accout from terminal using following command and then paste [HF token](https://huggingface.co/docs/hub/en/security-tokens).
+Solution: Go to the Hugging Face [page](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) and request the model's access by completing and submitting the form. It takes a few minutes and they grant you access. Then log into your Hugging Face account from the terminal using the command below and paste your [HF token](https://huggingface.co/docs/hub/en/security-tokens).
 ```
 huggingface-cli login
 ```
+Note: this step is entirely optional if you're using the pre-converted OpenVINO model provided with this submission — see [REPRODUCTION.md](REPRODUCTION.md).
 
 ## Hot Take / Insights
 
-**Adding a "smarter" retrieval method can make a RAG system worse before it makes it 
+**Adding a "smarter" retrieval method can make a RAG system worse before it makes it
 better — and the eval is what catches it, not intuition.**
 
-When we added hybrid search (BM25 + dense embeddings), the assumption was straightforward: 
-combining keyword matching with semantic search should only help, since it adds a signal 
-the dense-only baseline didn't have. Our first eval run proved that assumption wrong — the 
-hybrid retriever scored *lower* than the plain dense baseline (0.71 vs 0.79) on our 
+When we added hybrid search (BM25 + dense embeddings), the assumption was straightforward:
+combining keyword matching with semantic search should only help, since it adds a signal
+the dense-only baseline didn't have. Our first eval run proved that assumption wrong — the
+hybrid retriever scored *lower* than the plain dense baseline (0.71 vs 0.79) on our
 13-question set.
 
-The root cause wasn't the idea, it was the mechanics: at a small `k`, a single strong-but-wrong 
-BM25 keyword match could displace a correct dense-retrieved chunk purely because there wasn't 
-enough room in the candidate pool for both. On a small, well-embedded corpus like ours (12 
-documents), dense retrieval was already close to its ceiling, so BM25's contribution was more 
-noise than signal at low k. One case in particular (q05) flipped from a correct answer to a 
+The root cause wasn't the idea, it was the mechanics: at a small `k`, a single strong-but-wrong
+BM25 keyword match could displace a correct dense-retrieved chunk purely because there wasn't
+enough room in the candidate pool for both. On a small, well-embedded corpus like ours (12
+documents), dense retrieval was already close to its ceiling, so BM25's contribution was more
+noise than signal at low k. One case in particular (q05) flipped from a correct answer to a
 false refusal because of this.
 
-**The lesson: widen the candidate pool before you fuse, don't just add more retrieval 
-signals and hope they average out.** Giving each sub-retriever more room (`fetch_k`) before 
-rank fusion fixed the regression and brought hybrid search back to near-parity with the 
-baseline (0.78 vs 0.79), while preserving hybrid search's real advantage on exact-match 
+**The lesson: widen the candidate pool before you fuse, don't just add more retrieval
+signals and hope they average out.** Giving each sub-retriever more room (`fetch_k`) before
+rank fusion fixed the regression and brought hybrid search back to near-parity with the
+baseline (0.78 vs 0.79), while preserving hybrid search's real advantage on exact-match
 queries (case numbers, citations) that dense embeddings alone tend to miss.
 
-**What this changes about how we'd build the next agent:** any component that's supposed 
-to "add a capability" needs a same-cases, same-eval comparison against the version without 
-it — not just a plausibility check — because the failure mode here (correct answer → false 
-refusal) is exactly the kind of confident-but-wrong result a user would never notice without 
-a ground-truth eval sitting underneath it. We also chose not to keep chasing the number past 
-that point: a follow-up attempt with more aggressive settings scored *worse* (0.76) and was 
-reverted rather than kept, since over-tuning to 13 questions is its own failure mode.
+**A second, sharper lesson came from verification: it can't rescue an answer built on
+incomplete retrieval.** During live testing, a query about *Ohtli v Onora*'s outcome
+retrieved only the page-0 chunks (parties/preamble) of the correct document, missing the
+page-1 chunk with the actual order. The generator correctly refused given what it was shown,
+and the verifier correctly validated that refusal against that same incomplete context.
+Nothing in the pipeline "did anything wrong" given what it was each shown — the failure was
+upstream, in retrieval recall for that specific phrasing. Verification checks an answer
+against its own context; it has no way to know the context itself was incomplete.
+
+**What this changes about how we'd build the next agent:** any component that's supposed
+to "add a capability" needs a same-cases, same-eval comparison against the version without
+it — not just a plausibility check — because failure modes like a correct answer flipping to
+a false refusal, or a verifier confidently validating an answer built on a retrieval gap, are
+exactly the kind of confident-but-wrong results a user would never notice without a
+ground-truth eval sitting underneath the pipeline. We also chose not to keep chasing the
+eval number past a point of diminishing, principled returns: a follow-up attempt with more
+aggressive hybrid-search settings scored *worse* (0.76) and was reverted rather than kept,
+since over-tuning to 13 questions is its own failure mode.
