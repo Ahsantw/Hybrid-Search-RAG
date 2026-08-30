@@ -1,0 +1,434 @@
+{
+  "aggregate": {
+    "avg_overall_score": 0.7884615384615384,
+    "avg_response_time_seconds": 21.311520759875958,
+    "avg_keyword_score": 0.5416666666666666,
+    "avg_source_score": 1.0,
+    "avg_refusal_score": 1.0,
+    "num_cases": 13
+  },
+  "cases": [
+    {
+      "id": "q01",
+      "category": "outcome",
+      "difficulty": "easy",
+      "question": "What was the outcome of the appeal in LXT Real Estate Broker v SIR Real Estate (CA 005/2025)?",
+      "answer": "The appeal was refused.",
+      "sources": [
+        {
+          "file": "data/03b621728fe29eb6113fcdb57f6458d793fd2d5c5b833ae26d40f04a29c85359.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "1"
+        },
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "3"
+        }
+      ],
+      "response_time_seconds": 20.59145712852478,
+      "scores": {
+        "keyword_score": 0.0,
+        "keyword_hits": [],
+        "source_score": 1.0,
+        "source_hits": [
+          "03b621728"
+        ],
+        "overall_score": 0.5
+      }
+    },
+    {
+      "id": "q02",
+      "category": "costs-figure",
+      "difficulty": "medium",
+      "question": "How much did the Court order LXT Real Estate Broker to pay in the Defendant's costs in CA 005/2025, and within how many days?",
+      "answer": "AED 70,000 in costs, within 3 days.",
+      "sources": [
+        {
+          "file": "data/03b621728fe29eb6113fcdb57f6458d793fd2d5c5b833ae26d40f04a29c85359.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "5"
+        },
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "1"
+        }
+      ],
+      "response_time_seconds": 18.291669368743896,
+      "scores": {
+        "keyword_score": 0.0,
+        "keyword_hits": [],
+        "source_score": 1.0,
+        "source_hits": [
+          "03b621728"
+        ],
+        "overall_score": 0.5
+      }
+    },
+    {
+      "id": "q03",
+      "category": "procedural-reasoning",
+      "difficulty": "medium",
+      "question": "In Fursa Consulting v Bay Gate Investment (CFI 010/2024), why was the Claimant's application for a Default Costs Certificate dismissed?",
+      "answer": "The Claimant's application for a Default Costs Certificate was dismissed because the Claimant failed to comply with the mandatory procedural requirements for commencing detailed assessment proceedings.",
+      "sources": [
+        {
+          "file": "data/443e04bc1a78940b3fcd5438d24b6c5f182a276d354a3108e738b193675de032.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/443e04bc1a78940b3fcd5438d24b6c5f182a276d354a3108e738b193675de032.pdf",
+          "page": "1"
+        },
+        {
+          "file": "data/443e04bc1a78940b3fcd5438d24b6c5f182a276d354a3108e738b193675de032.pdf",
+          "page": "2"
+        }
+      ],
+      "response_time_seconds": 17.11150574684143,
+      "scores": {
+        "keyword_score": 0.0,
+        "keyword_hits": [],
+        "source_score": 1.0,
+        "source_hits": [
+          "443e04bc1"
+        ],
+        "overall_score": 0.5
+      }
+    },
+    {
+      "id": "q04",
+      "category": "outcome",
+      "difficulty": "easy",
+      "question": "In the arbitration case Ohtli v Onora (ARB 034/2025), what happened to the anti-suit injunction (ASI Order)?",
+      "answer": "The ASI Order was dismissed and the Defendant's Set Aside Application was granted.",
+      "sources": [
+        {
+          "file": "data/58eae81bf668e7f6c58619f419a49b5e35e2e5c9c7475475ace28ec562580545.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/58eae81bf668e7f6c58619f419a49b5e35e2e5c9c7475475ace28ec562580545.pdf",
+          "page": "3"
+        },
+        {
+          "file": "data/58eae81bf668e7f6c58619f419a49b5e35e2e5c9c7475475ace28ec562580545.pdf",
+          "page": "1"
+        }
+      ],
+      "response_time_seconds": 14.57609224319458,
+      "scores": {
+        "keyword_score": 0.6666666666666666,
+        "keyword_hits": [
+          "Set Aside Application",
+          "granted"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "58eae81bf"
+        ],
+        "overall_score": 0.8333333333333333
+      }
+    },
+    {
+      "id": "q05",
+      "category": "figures-and-reasoning",
+      "difficulty": "medium",
+      "question": "What amount did Okpara originally pay Oralee for visa processing, and what did the Court find about the Defendant's obligation to refund it?",
+      "answer": "The Claimant (Okpara) paid AED 15,570 to Oralee for visa processing. The Court found that the Defendant (Oralee) was in breach of Clause 8 of the Agreement, which guarantees a refund of professional service charges if the visa application is unsuccessful for reasons not attributable to the Claimant. Therefore, the Court ordered the Defendant to refund the entire amount of AED 15,570 to the Claimant.",
+      "sources": [
+        {
+          "file": "data/6306079a16b1dec85690f75c715cdbd78b0685a3e19ee30250d481bc32f2e29a.pdf",
+          "page": "2"
+        },
+        {
+          "file": "data/6306079a16b1dec85690f75c715cdbd78b0685a3e19ee30250d481bc32f2e29a.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/6306079a16b1dec85690f75c715cdbd78b0685a3e19ee30250d481bc32f2e29a.pdf",
+          "page": "2"
+        }
+      ],
+      "response_time_seconds": 29.609899759292603,
+      "scores": {
+        "keyword_score": 1.0,
+        "keyword_hits": [
+          "15,570",
+          "Clause 8",
+          "breach"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "6306079a1"
+        ],
+        "overall_score": 1.0
+      }
+    },
+    {
+      "id": "q06",
+      "category": "costs-figure",
+      "difficulty": "medium",
+      "question": "In Coinmena B.S.C. (C) v Foloosi Technologies Ltd (CFI 067/2025), what percentage of costs was Foloosi ordered to pay, and what was the resulting amount?",
+      "answer": "The Claimant (Coinmena B.S.C. (C)) was ordered to pay 80% of the total costs claimed by the Respondent (Foloosi Technologies Ltd), which resulted in a payment of USD 155,879.50.",
+      "sources": [
+        {
+          "file": "data/897ab23ed5a70034d3d708d871ad1da8bc7b6608d94b1ca46b5d578d985d3c13.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/897ab23ed5a70034d3d708d871ad1da8bc7b6608d94b1ca46b5d578d985d3c13.pdf",
+          "page": "1"
+        },
+        {
+          "file": "data/03b621728fe29eb6113fcdb57f6458d793fd2d5c5b833ae26d40f04a29c85359.pdf",
+          "page": "1"
+        }
+      ],
+      "response_time_seconds": 25.760645627975464,
+      "scores": {
+        "keyword_score": 1.0,
+        "keyword_hits": [
+          "80%",
+          "155,879.50"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "897ab23ed"
+        ],
+        "overall_score": 1.0
+      }
+    },
+    {
+      "id": "q07",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "question": "Why did the judge refuse to grant an adjournment of the appeal hearing in Obasi v Oreana [2025] DIFC SCT 169?",
+      "answer": "The judge refused to grant an adjournment of the appeal hearing because it seemed unfair and unlikely to be in accordance with the overall objective, given that the Defendant had had every opportunity to make arrangements to appear in relation to the matter, and that granting an adjournment would be a third wasted hearing due to the Defendant's failure to attend or produce documents late.",
+      "sources": [
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "2"
+        },
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "2"
+        }
+      ],
+      "response_time_seconds": 28.124106407165527,
+      "scores": {
+        "keyword_score": 0.3333333333333333,
+        "keyword_hits": [
+          "opportunity"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "3a574fc4f"
+        ],
+        "overall_score": 0.6666666666666666
+      }
+    },
+    {
+      "id": "q08",
+      "category": "figures-and-reasoning",
+      "difficulty": "medium",
+      "question": "In Oleta v Onesimo [2024] DIFC SCT 454, how much was Oleta owed for her September salary, and was Onesimo's set-off claim for training costs allowed?",
+      "answer": "The Claimant, Oleta, was owed AED 3,466.67 for her September salary. The set-off claim for training costs made by Onesimo was denied.",
+      "sources": [
+        {
+          "file": "data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf",
+          "page": "1"
+        },
+        {
+          "file": "data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf",
+          "page": "2"
+        },
+        {
+          "file": "data/f4c4d051d514270964adcf58e124569e396602340b7d9172671759de10a95897.pdf",
+          "page": "2"
+        }
+      ],
+      "response_time_seconds": 18.1243417263031,
+      "scores": {
+        "keyword_score": 1.0,
+        "keyword_hits": [
+          "3,466.67",
+          "denied"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "f4c4d051d"
+        ],
+        "overall_score": 1.0
+      }
+    },
+    {
+      "id": "q09",
+      "category": "reasoning",
+      "difficulty": "hard",
+      "question": "In CFI 016/2025 Omar Ben Hallam v Natixis, did Practice Direction No. 1 of 2025 apply retrospectively to relieve the Claimant of the costs order, and how much did the Claimant end up owing?",
+      "answer": "The Practice Direction did not apply retrospectively to relieve the Claimant of the costs order. The Claimant ended up owing AED 70,000 in costs to the Defendant.",
+      "sources": [
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "2"
+        },
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "3"
+        }
+      ],
+      "response_time_seconds": 22.915549755096436,
+      "scores": {
+        "keyword_score": 1.0,
+        "keyword_hits": [
+          "retrospective",
+          "70,000"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "6248961b6"
+        ],
+        "overall_score": 1.0
+      }
+    },
+    {
+      "id": "q10",
+      "category": "costs-figure",
+      "difficulty": "medium",
+      "question": "How much were the Appellants' costs assessed at in CA 004/2025 (Mr Oran and Oaken v Oved), and what annual interest rate applies if unpaid within 14 days?",
+      "answer": "The Appellants' costs were assessed at AED 720,000. If these costs are not paid within 14 days, interest will accrue at the rate of 9% per annum.",
+      "sources": [
+        {
+          "file": "data/78ffe994cdc61ce6a2a6937c79fc52751bb5d2b4eaa4019f088fbccf70569c26.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/78ffe994cdc61ce6a2a6937c79fc52751bb5d2b4eaa4019f088fbccf70569c26.pdf",
+          "page": "4"
+        },
+        {
+          "file": "data/78ffe994cdc61ce6a2a6937c79fc52751bb5d2b4eaa4019f088fbccf70569c26.pdf",
+          "page": "1"
+        }
+      ],
+      "response_time_seconds": 19.977356672286987,
+      "scores": {
+        "keyword_score": 1.0,
+        "keyword_hits": [
+          "720,000",
+          "9%"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "78ffe994c"
+        ],
+        "overall_score": 1.0
+      }
+    },
+    {
+      "id": "q11",
+      "category": "outcome-and-reasoning",
+      "difficulty": "medium",
+      "question": "In CFI 057/2025 Clyde & Co LLP v Union Properties, was the Defendant's Permission to Appeal Application granted or refused, and what test did the Court apply?",
+      "answer": "I don't know. The document does not mention the outcome of the Permission to Appeal Application.",
+      "sources": [
+        {
+          "file": "data/1b446e196b4d1752241c8ff689a31ea705e98ad0c16b9d343c303664f72b64a1.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/3a574fc4f0baa5ec7ff0dcc822d7c55e4f9c493c24addc217c8df3d848c16fa5.pdf",
+          "page": "1"
+        },
+        {
+          "file": "data/03b621728fe29eb6113fcdb57f6458d793fd2d5c5b833ae26d40f04a29c85359.pdf",
+          "page": "1"
+        }
+      ],
+      "response_time_seconds": 18.58496642112732,
+      "scores": {
+        "keyword_score": 0.0,
+        "keyword_hits": [],
+        "source_score": 1.0,
+        "source_hits": [
+          "1b446e196"
+        ],
+        "overall_score": 0.5
+      }
+    },
+    {
+      "id": "q12",
+      "category": "ambiguous-duplicate-case",
+      "difficulty": "hard",
+      "question": "How much did the Court order the Defendant to pay the Claimant in costs in TCD 001/2024, Architeriors Interior Design v Emirates National Investment Co?",
+      "answer": "AED 44,000.00.",
+      "sources": [
+        {
+          "file": "data/0471e83c1ea18086cfb6b3ff51da6f22b0efee337f10315b2593f782297ccb84.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/62930da32fa3172edf2f2bbf3da268455bd99a7b5fab34d72358730d8cd5da30.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/6248961b681ea0deb189f354be0c8286f35974dcdb211c13c921c3dd0e566a6e.pdf",
+          "page": "0"
+        }
+      ],
+      "response_time_seconds": 21.96891450881958,
+      "scores": {
+        "keyword_score": 0.5,
+        "keyword_hits": [
+          "44,000"
+        ],
+        "source_score": 1.0,
+        "source_hits": [
+          "0471e83c1",
+          "62930da3"
+        ],
+        "overall_score": 0.75
+      }
+    },
+    {
+      "id": "q13",
+      "category": "out-of-scope-refusal",
+      "difficulty": "hard",
+      "question": "What was the outcome of the criminal trial against John Smith in the Dubai Court of Cassation?",
+      "answer": "I don't know. The provided text does not mention a criminal trial against John Smith in the Dubai Court of Cassation.",
+      "sources": [
+        {
+          "file": "data/6306079a16b1dec85690f75c715cdbd78b0685a3e19ee30250d481bc32f2e29a.pdf",
+          "page": "3"
+        },
+        {
+          "file": "data/62930da32fa3172edf2f2bbf3da268455bd99a7b5fab34d72358730d8cd5da30.pdf",
+          "page": "0"
+        },
+        {
+          "file": "data/6306079a16b1dec85690f75c715cdbd78b0685a3e19ee30250d481bc32f2e29a.pdf",
+          "page": "4"
+        }
+      ],
+      "response_time_seconds": 21.413264513015747,
+      "scores": {
+        "refusal_score": 1.0,
+        "overall_score": 1.0
+      }
+    }
+  ]
+}

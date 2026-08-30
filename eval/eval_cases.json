@@ -1,0 +1,132 @@
+[
+  {
+    "id": "q01",
+    "category": "outcome",
+    "difficulty": "easy",
+    "type": "keyword",
+    "question": "What was the outcome of the appeal in LXT Real Estate Broker v SIR Real Estate (CA 005/2025)?",
+    "expected_keywords": ["appeal is allowed", "remitted", "cross appeal", "dismissed"],
+    "expected_sources": ["03b621728"],
+    "notes": "Straightforward outcome lookup from a single, unambiguous document."
+  },
+  {
+    "id": "q02",
+    "category": "costs-figure",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "How much did the Court order LXT Real Estate Broker to pay in the Defendant's costs in CA 005/2025, and within how many days?",
+    "expected_keywords": ["550,000", "14 days"],
+    "expected_sources": ["03b621728"],
+    "notes": "Requires pulling an exact figure and a deadline from the same document."
+  },
+  {
+    "id": "q03",
+    "category": "procedural-reasoning",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "In Fursa Consulting v Bay Gate Investment (CFI 010/2024), why was the Claimant's application for a Default Costs Certificate dismissed?",
+    "expected_keywords": ["Rule 40.5", "Notice of Commencement", "P40/01"],
+    "expected_sources": ["443e04bc1"],
+    "notes": "Tests whether the model surfaces the specific procedural rule cited as the reason, not just the outcome."
+  },
+  {
+    "id": "q04",
+    "category": "outcome",
+    "difficulty": "easy",
+    "type": "keyword",
+    "question": "In the arbitration case Ohtli v Onora (ARB 034/2025), what happened to the anti-suit injunction (ASI Order)?",
+    "expected_keywords": ["discharged", "Set Aside Application", "granted"],
+    "expected_sources": ["58eae81bf"],
+    "notes": "Straightforward outcome lookup."
+  },
+  {
+    "id": "q05",
+    "category": "figures-and-reasoning",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "What amount did Okpara originally pay Oralee for visa processing, and what did the Court find about the Defendant's obligation to refund it?",
+    "expected_keywords": ["15,570", "Clause 8", "breach"],
+    "expected_sources": ["6306079a1"],
+    "notes": "Combines a specific figure with a legal finding from the same case."
+  },
+  {
+    "id": "q06",
+    "category": "costs-figure",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "In Coinmena B.S.C. (C) v Foloosi Technologies Ltd (CFI 067/2025), what percentage of costs was Foloosi ordered to pay, and what was the resulting amount?",
+    "expected_keywords": ["80%", "155,879.50"],
+    "expected_sources": ["897ab23ed"],
+    "notes": "Requires two related numeric facts from the same order."
+  },
+  {
+    "id": "q07",
+    "category": "reasoning",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "Why did the judge refuse to grant an adjournment of the appeal hearing in Obasi v Oreana [2025] DIFC SCT 169?",
+    "expected_keywords": ["influenza", "medical certificate", "opportunity"],
+    "expected_sources": ["3a574fc4f"],
+    "notes": "Requires synthesizing reasoning spread across a few sentences rather than a single fact."
+  },
+  {
+    "id": "q08",
+    "category": "figures-and-reasoning",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "In Oleta v Onesimo [2024] DIFC SCT 454, how much was Oleta owed for her September salary, and was Onesimo's set-off claim for training costs allowed?",
+    "expected_keywords": ["3,466.67", "denied"],
+    "expected_sources": ["f4c4d051d"],
+    "notes": "Small Claims Tribunal case with a precise figure plus a yes/no legal finding."
+  },
+  {
+    "id": "q09",
+    "category": "reasoning",
+    "difficulty": "hard",
+    "type": "keyword",
+    "question": "In CFI 016/2025 Omar Ben Hallam v Natixis, did Practice Direction No. 1 of 2025 apply retrospectively to relieve the Claimant of the costs order, and how much did the Claimant end up owing?",
+    "expected_keywords": ["retrospective", "70,000"],
+    "expected_sources": ["6248961b6"],
+    "notes": "Requires correctly resolving a nuanced retrospectivity argument, not just extracting a figure."
+  },
+  {
+    "id": "q10",
+    "category": "costs-figure",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "How much were the Appellants' costs assessed at in CA 004/2025 (Mr Oran and Oaken v Oved), and what annual interest rate applies if unpaid within 14 days?",
+    "expected_keywords": ["720,000", "9%"],
+    "expected_sources": ["78ffe994c"],
+    "notes": "Two related figures from the same order."
+  },
+  {
+    "id": "q11",
+    "category": "outcome-and-reasoning",
+    "difficulty": "medium",
+    "type": "keyword",
+    "question": "In CFI 057/2025 Clyde & Co LLP v Union Properties, was the Defendant's Permission to Appeal Application granted or refused, and what test did the Court apply?",
+    "expected_keywords": ["refused", "real prospect of success"],
+    "expected_sources": ["1b446e196"],
+    "notes": "Outcome plus the specific legal test cited for it."
+  },
+  {
+    "id": "q12",
+    "category": "ambiguous-duplicate-case",
+    "difficulty": "hard",
+    "type": "ambiguous_multi",
+    "question": "How much did the Court order the Defendant to pay the Claimant in costs in TCD 001/2024, Architeriors Interior Design v Emirates National Investment Co?",
+    "expected_keywords": ["60,000", "44,000"],
+    "expected_sources": ["0471e83c1", "62930da3"],
+    "notes": "Deliberately adversarial: claim number TCD 001/2024 has TWO separate cost orders on different dates (3 Dec 2025: AED 60,000 for the Permission-to-Appeal + Application costs; 29 Jan 2026: AED 44,000 for the Renewed Application costs). There is no single correct number. This tests whether retrieval surfaces both same-named documents (a strong case for BM25's exact case-name matching) and whether the model distinguishes them instead of conflating or guessing one figure with false confidence."
+  },
+  {
+    "id": "q13",
+    "category": "out-of-scope-refusal",
+    "difficulty": "hard",
+    "type": "refusal",
+    "question": "What was the outcome of the criminal trial against John Smith in the Dubai Court of Cassation?",
+    "expected_keywords": [],
+    "expected_sources": [],
+    "notes": "No such case exists anywhere in the corpus (all 12 documents are DIFC Courts civil/commercial orders; none involve a 'John Smith' or the Dubai Court of Cassation). A grounded assistant should decline to answer rather than fabricate a case outcome. Tests hallucination resistance, not retrieval."
+  }
+]

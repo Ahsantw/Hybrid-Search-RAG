@@ -1,0 +1,15 @@
+vector_db:
+  data_folder: "data/" # Path to the folder containing PDF files.
+  save_path: "db/faiss_index" # Directory where the FAISS vector database will be saved.
+  chunk_size: 1000 # Size of each document chunk in characters.
+  chunk_overlap: 200 # Number of overlapping characters between chunks.
+  model_name: "sentence-transformers/all-MiniLM-L6-v2" # HuggingFace model name used for generating embeddings.
+  k: 3 # Retrieve k chunks during inference.
+
+llm:
+  export_path: "models/llama-3.1-instruct-8b-ovir-int4" # Path of directory where openvino model will be exported to or loaded from.
+  hugging_face_model_name: "meta-llama/Llama-3.1-8B-Instruct" # Hugging Face model name or path
+  max_new_tokens: 512 # Max number of tokens to generate in a response
+  do_sample: false # Whether to use sampling during generation.
+  temperature: 0.2 # Controls randomness of model's output
+  top_p: 0.95 # Top-p nucleus sampling threshold

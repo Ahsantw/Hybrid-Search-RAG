@@ -1,0 +1,36 @@
+2026-08-31 00:08:17,788 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-31 00:08:17,789 - __main__ - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 00:08:22,905 - __main__ - INFO - Reading all the pdfs from data/
+2026-08-31 00:08:24,934 - __main__ - INFO - Dividing text into chunk of size 1000 with overlap of 200
+2026-08-31 00:08:24,939 - __main__ - INFO - Storing into DB sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 00:17:27,985 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-31 00:17:28,030 - backend - INFO - Loading LLM model
+2026-08-31 00:17:31,009 - backend - INFO - Loading vector store
+2026-08-31 00:17:31,013 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 00:17:37,126 - backend - INFO - Backend ready to serve requests
+2026-08-31 00:17:46,877 - backend - INFO - Question What was the outcome in LXT Real Estate Broker v SIR Real Estate?
+2026-08-31 00:18:16,731 - backend - INFO - Answer  The Permission to Appeal Application was refused.
+2026-08-31 00:20:17,188 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-31 00:20:17,254 - backend - INFO - Loading LLM model
+2026-08-31 00:20:20,145 - backend - INFO - Loading vector store
+2026-08-31 00:20:20,147 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 00:20:25,482 - backend - INFO - Backend ready to serve requests
+2026-08-31 00:20:32,120 - backend - INFO - Question What was the outcome in LXT Real Estate Broker v SIR Real Estate?
+2026-08-31 00:20:56,760 - backend - INFO - Answer  The outcome was that the Permission to Appeal Application was refused, the request for an adjournment of the Hearing was refused, and there was no order as to costs.
+2026-08-31 00:21:02,427 - backend - INFO - Question what is this case about
+2026-08-31 00:24:24,965 - backend - INFO - Question Tell me about CFI 057/2025 Clyde & Co LLP v (1) Union Properties P.J.S.C. (2)
+UPP Capital Investment LLC case
+2026-08-31 00:24:45,699 - backend - INFO - Answer  I don't have specific information about the case CFI 057/2025 Clyde & Co LLP v (1) Union Properties P.J.S.C. (2) UPP Capital Investment LLC.
+2026-08-31 00:26:26,128 - backend - INFO - Question tell me other date of Ohtli v Onora.
+2026-08-31 00:26:39,393 - backend - INFO - Answer  I don't know. The provided text does not mention any other date of Ohtli v Onora.
+2026-08-31 00:26:51,942 - backend - INFO - Question tell me order date of Ohtli v Onora.
+2026-08-31 00:27:04,034 - backend - INFO - Answer  December 19, 2025
+2026-08-31 00:45:47,141 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:04:21,379 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:10:45,467 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:16:16,111 - eval - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:21:56,548 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-31 01:21:56,591 - backend - INFO - Loading LLM model
+2026-08-31 01:21:59,488 - backend - INFO - Loading vector store
+2026-08-31 01:21:59,490 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-31 01:22:05,367 - backend - INFO - Backend ready to serve requests

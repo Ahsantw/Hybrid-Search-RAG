@@ -1,0 +1,109 @@
+2026-08-30 18:40:35,037 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 18:40:35,423 - __main__ - ERROR - Failed to Run the pipeline : models/llama-3.1-instruct-8b-ovir-int4 is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `huggingface-cli login` or by passing `token=<your_token>`
+2026-08-30 18:41:02,460 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 18:41:02,825 - __main__ - ERROR - Failed to Run the pipeline : models/llama-3.1-instruct-8b-ovir-int4 is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `huggingface-cli login` or by passing `token=<your_token>`
+2026-08-30 19:15:18,655 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 19:15:19,033 - __main__ - ERROR - Failed to Run the pipeline : models/llama-3.1-instruct-8b-ovir-int4 is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `huggingface-cli login` or by passing `token=<your_token>`
+2026-08-30 19:17:38,862 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 19:17:39,234 - __main__ - ERROR - Failed to load model from models/llama-3.1-instruct-8b-ovir-int4: models/llama-3.1-instruct-8b-ovir-int4 is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `huggingface-cli login` or by passing `token=<your_token>`
+2026-08-30 19:17:39,235 - __main__ - INFO - Downloading and Converting the meta-llama/Llama-3.1-8B-Instruct Model to OVIR INT4 from scratch
+2026-08-30 20:22:33,338 - __main__ - INFO - Successfully loaded model from models/llama-3.1-instruct-8b-ovir-int4
+2026-08-30 20:57:23,445 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 20:57:25,781 - __main__ - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 20:58:07,624 - __main__ - INFO - Question hi
+2026-08-30 21:11:51,938 - __main__ - INFO - -----------------------STARTED LOGGING---------------------------
+2026-08-30 21:11:57,421 - __main__ - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 21:12:10,078 - __main__ - INFO - Question tell me about procyon
+2026-08-30 21:14:57,732 - __main__ - INFO -  - Page 1, File: data/procyon_guide.pdf
+2026-08-30 21:14:57,733 - __main__ - INFO -  - Page 39, File: data/procyon_guide.pdf
+2026-08-30 21:14:57,733 - __main__ - INFO -  - Page 30, File: data/procyon_guide.pdf
+2026-08-30 21:14:57,733 - __main__ - INFO - Answer  Based on the provided text, here are the key points about Procyon:
+
+* Procyon is a suite of benchmark tests for professional users in various industries.
+* Each Procyon benchmark is designed for a specific use case and uses real applications where possible.
+* Procyon benchmarks are easy to install and run from the Procyon app or command line with no complicated configuration required.
+* Each benchmark produces a score, with higher scores indicating better performance.
+* Procyon is designed for professionals, specifically engineering teams, to assess the general AI performance of inference engine implementations and dedicated hardware.
+* The Procyon AI Computer Vision Benchmark measures the performance of dedicated AI processing hardware and verifies inference engine implementation quality with tests based on common machine-vision tasks.
+* The benchmark is easy to use and produces a score, with results available in a CSV or XML file.
+* Procyon has a Procyon app that allows users to view benchmark scores and charts or export detailed result files for further analysis.
+* Procyon can be uninstalled using a script, and it's not recommended to uninstall by removing the installation folder directly.
+2026-08-30 21:14:57,733 - __main__ - INFO - Question 
+2026-08-30 21:15:20,626 - __main__ - INFO -  - Page 39, File: data/procyon_guide.pdf
+2026-08-30 21:15:20,626 - __main__ - INFO -  - Page 33, File: data/procyon_guide.pdf
+2026-08-30 21:15:20,626 - __main__ - INFO -  - Page 13, File: data/procyon_guide.pdf
+2026-08-30 21:15:20,626 - __main__ - INFO - Answer  I'm ready to help. What is the question?
+2026-08-30 21:15:20,627 - __main__ - INFO - Question 
+2026-08-30 21:15:43,820 - __main__ - INFO -  - Page 39, File: data/procyon_guide.pdf
+2026-08-30 21:15:43,820 - __main__ - INFO -  - Page 33, File: data/procyon_guide.pdf
+2026-08-30 21:15:43,821 - __main__ - INFO -  - Page 13, File: data/procyon_guide.pdf
+2026-08-30 21:15:43,821 - __main__ - INFO - Answer  I'm ready to help. What is the question?
+2026-08-30 21:15:43,821 - __main__ - INFO - Question 
+2026-08-30 21:16:07,646 - __main__ - INFO -  - Page 39, File: data/procyon_guide.pdf
+2026-08-30 21:16:07,646 - __main__ - INFO -  - Page 33, File: data/procyon_guide.pdf
+2026-08-30 21:16:07,647 - __main__ - INFO -  - Page 13, File: data/procyon_guide.pdf
+2026-08-30 21:16:07,647 - __main__ - INFO - Answer  I'm ready to help. What is the question?
+2026-08-30 21:30:06,126 - __main__ - INFO - Question exit
+2026-08-30 22:16:54,460 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-30 22:16:54,517 - backend - INFO - Loading LLM model
+2026-08-30 22:16:57,475 - backend - INFO - Loading vector store
+2026-08-30 22:16:57,479 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 22:17:03,319 - backend - INFO - Backend ready to serve requests
+2026-08-30 22:17:16,847 - backend - INFO - Question what is procyon
+2026-08-30 22:17:38,469 - backend - INFO - Answer  Procyon is a suite of benchmarks and tools for measuring the performance of AI processing hardware and inference engine implementations, specifically designed for professionals and engineers.
+2026-08-30 22:20:30,031 - backend - INFO - Question what is procyon
+2026-08-30 22:20:46,567 - backend - INFO - Answer  Procyon is a suite of benchmarks and tools for measuring the performance of AI processing hardware and inference engine implementations, specifically designed for professionals and engineers.
+2026-08-30 22:34:46,447 - backend - INFO - Question tell me about pycron
+2026-08-30 22:35:01,068 - backend - INFO - Answer  I don't know. The text only mentions "UL Procyon" and "Procyon", but not "pycron".
+2026-08-30 22:35:15,550 - backend - INFO - Question okay tell me about procyon
+2026-08-30 22:36:00,819 - backend - INFO - Answer  Based on the provided text, here's what I can tell you about Procyon:
+
+Procyon is a suite of benchmark tests designed for professional users in various industries, including industry, enterprise, government, retail, and press roles. It's a set of standardized tests that produce consistent and repeatable results, making it easy to compare performance across different systems. Procyon benchmarks are designed for specific use cases and use real applications where possible, ensuring accuracy, relevance, and impartiality.
+
+The Procyon suite includes a benchmark for office productivity, as well as a benchmark for AI computer vision, which measures the performance of dedicated AI processing hardware and inference engine implementation quality.
+
+Key features of Procyon include:
+
+* Easy setup and use via the Procyon application or command-line
+* Fast and easy to run with no complicated configuration required
+* Produces a score, with higher scores indicating better performance
+* Results can be exported in CSV or XML format for further analysis
+* Uninstallation is possible via a script, but it's not recommended to uninstall by removing the installation folder directly.
+
+Procyon is designed for professionals who need independent, standardized tools for assessing AI performance and dedicated hardware.
+2026-08-30 23:16:54,918 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-30 23:16:55,123 - backend - INFO - Loading LLM model
+2026-08-30 23:16:58,613 - backend - INFO - Loading vector store
+2026-08-30 23:16:58,616 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 23:17:04,610 - backend - INFO - Backend ready to serve requests
+2026-08-30 23:17:09,346 - backend - INFO - Question what is procyon
+2026-08-30 23:17:34,009 - backend - INFO - Answer  Procyon is a suite of benchmarks and tools for measuring the performance of AI processing hardware and inference engine implementations, specifically designed for professionals and engineers.
+2026-08-30 23:17:43,000 - backend - INFO - Question what does the guide say about benchmarks
+2026-08-30 23:18:11,499 - backend - INFO - Question what is procyon
+2026-08-30 23:18:34,277 - backend - INFO - Answer  Procyon is a suite of benchmarks and tools for measuring the performance of AI processing hardware and inference engine implementations, specifically designed for professionals and engineers.
+2026-08-30 23:19:24,293 - backend - INFO - Question tell me about procyon
+2026-08-30 23:19:52,922 - backend - INFO - Answer  UL Procyon is a suite of benchmark tests designed for professional users in various industries, including industry, enterprise, government, retail, and press roles. It provides a standardized and impartial way to measure the performance of computers, with a focus on real-world applications and ease of use. The Procyon benchmarks are designed to be easy to install and run, with no complicated configuration required, and produce a score that indicates better performance.
+2026-08-30 23:27:13,654 - backend - INFO - Question tell me about procyon
+2026-08-30 23:27:36,685 - backend - INFO - Answer  UL Procyon is a suite of benchmark tests designed for professional users in various industries, including industry, enterprise, government, retail, and press roles. It provides a standardized and impartial way to measure the performance of computers, with a focus on real-world applications and ease of use. The Procyon benchmarks are designed to be easy to install and run, with no complicated configuration required, and produce a score that indicates better performance.
+2026-08-30 23:48:39,017 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-30 23:48:39,055 - backend - INFO - Loading LLM model
+2026-08-30 23:48:41,925 - backend - INFO - Loading vector store
+2026-08-30 23:48:41,927 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 23:48:47,379 - backend - INFO - Backend ready to serve requests
+2026-08-30 23:48:54,060 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:00,345 - backend - INFO - Question what is procyon
+2026-08-30 23:49:21,377 - backend - INFO - Answer  Procyon is a suite of benchmarks and tools for measuring the performance of AI processing hardware and inference engine implementations, specifically designed for professionals and engineers.
+2026-08-30 23:49:26,199 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:26,237 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:26,275 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:26,336 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:26,378 - backend - INFO - Failed login attempt from 127.0.0.1
+2026-08-30 23:49:52,125 - backend - INFO - -----------------------BACKEND STARTED---------------------------
+2026-08-30 23:49:52,178 - backend - INFO - Loading LLM model
+2026-08-30 23:49:55,135 - backend - INFO - Loading vector store
+2026-08-30 23:49:55,138 - backend - INFO - Loading Embeding Model sentence-transformers/all-MiniLM-L6-v2
+2026-08-30 23:50:00,456 - backend - INFO - Backend ready to serve requests

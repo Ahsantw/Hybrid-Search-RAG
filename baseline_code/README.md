@@ -8,8 +8,6 @@ This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pip
 4. Use a Sentence-Transformers embedding model to generate embeddings and store them using FAISS.
 5. Build a question-answering (QA) system using LangChain to complete the RAG pipeline.
 6. Logs for all the steps are documented in all_logs folder. So very easy to debug any issues.
-> Setting this up on a new machine? See [REPRODUCTION.md](REPRODUCTION.md) for a complete step-by-step guide (CLI, web UI, and the eval harness).
-
 ### Installation
 
 1. Clone the Repository
@@ -73,27 +71,6 @@ Answer:  Benchmarks at the enterprise IT level support every stage in the life c
 • Operations and management: Efficiently automate remote performance testing to provide reliable insights and reporting
 • Optimization or replacement: Make informed PC life-cycle decisions based on benchmark results stored in your central database
 ```
-
-### Web UI (Backend + Frontend)
-
-The same RAG pipeline is also available as a web app so users can ask questions from a browser instead of the terminal.
-
-- `backend/main.py` — FastAPI service that loads the LLM and FAISS index once at startup and exposes `POST /api/chat`.
-- `frontend/` — React (Vite) chat UI that calls the backend.
-
-1. Start the backend (from the project root, using the Python environment with the pipeline's dependencies installed):
-```
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
-```
-2. In a separate terminal, start the frontend:
-```
-cd frontend
-npm install
-npm run dev
-```
-3. Open the URL Vite prints (default `http://127.0.0.1:5173`). The dev server proxies `/api/*` requests to the backend on port 8000.
-
-The vector DB and LLM must already be built/converted (steps above, or `bash run_demo.sh`) before starting the backend.
 
 ### Hardware Specs.
 
