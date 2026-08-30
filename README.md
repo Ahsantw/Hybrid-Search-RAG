@@ -1,3 +1,42 @@
+## Problem & User
+
+**Who has this problem?**
+Lawyers and legal teams — in this case, working with DIFC Courts case documents — deal with 
+large volumes of dense legal PDFs: case files, judgments, cost orders, and filings that can 
+run into hundreds of pages across dozens of documents. Finding a specific fact (a claim 
+number, a cost order amount, a ruling detail) means manually searching or skimming through 
+these documents case by case.
+
+**What's the bottleneck?**
+Three things make this genuinely hard to solve with an off-the-shelf tool:
+
+- **Volume** — a single matter can span many long PDFs, and the relevant fact could be 
+  buried on any page of any document. Manual search doesn't scale, and it's easy to miss or 
+  misattribute similar-sounding cases (e.g., two cost orders under the same case name).
+- **Cost** — most AI solutions rely on paid third-party APIs charged per query. For a firm 
+  running hundreds of lookups a day, that adds up fast. This solution runs entirely on local 
+  CPU using an OpenVINO-optimized model, so there's no per-query API cost.
+- **Privacy** — legal documents are confidential. Sending case files to a third-party API is 
+  often a non-starter for client confidentiality and data-handling obligations. This solution 
+  is fully in-house: the model, the retrieval index, and the documents never leave the local 
+  machine.
+
+**Why it's worth solving**
+A lawyer or paralegal should be able to ask a plain-language question and get a fast, cited 
+answer pulled directly from the case documents — without paying per query, without sending 
+confidential filings to an external API, and without manually re-reading PDFs every time a 
+question comes up.
+
+**Does the agent solve it well?**
+See [CHANGELOG.md](./CHANGELOG.md) for the full progression from a simple dense-retrieval 
+baseline to the current hybrid-search + verification pipeline, and [eval/](./eval/) for 
+baseline-vs-agent evidence.
+
+**Can another person reproduce the result?**
+Yes — see [REPRODUCTION.md](./REPRODUCTION.md) for full setup on a clean machine, including 
+the OpenVINO model (no gated Hugging Face download required).
+
+
 # Retrieval-Augmented Generation (RAG)
 
 This project demonstrates an end-to-end Retrieval-Augmented Generation (RAG) pipeline. Main features of this repository are:

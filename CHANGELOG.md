@@ -63,3 +63,8 @@ All notable changes to this project are documented in this file.
 - `bm25_weight` / `dense_weight` rebalanced from 0.5/0.5 to `0.4`/`0.6` — on this small, well-embedded corpus dense retrieval was already close to ceiling, so tilting toward it reduces BM25 noise while keeping its contribution for genuine keyword/citation matches.
 - Result: agent's eval score moved from 0.71 to 0.78 against baseline's unmoved 0.79 (baseline's code, config, and results were never touched) — effectively parity. A more aggressive follow-up attempt (`hybrid_fetch_k: 12`, `dense_weight: 0.7`) was tried and scored *worse* (0.76); that setting was reverted rather than kept, and the negative result is recorded in `comparison_table.md` rather than discarded, since chasing a specific 13-question eval past the point of principled justification is a form of overfitting.
 - `backend/main.py` and `rag_cli.py` updated to pass `fetch_k` through from config.
+
+### Added — Verification step (`src/verifier.py`)
+- `verify_answer()` runs a second LLM pass after the main answer is generated, checking the draft answer against the same retrieved context the generator saw, and returning a `{verdict, note}` where verdict is `supported`, `unsupported`, `ambiguous`, or `unparsed`. Capped to 80 new tokens since the verdict+note never needs more.
+- Wired into `backend/main.py` (`POST /api/chat` returns a `verification` field; `/api/chat/stream` emits a `verifying` status event then a `verification` event), `rag_cli.py` (prints the verdict/note after each answer), and `eval/run_eval.py` (recorded per-question in the eval trajectory and results).
+- See "Answer verification (agentic self-check)" above for the full write-up, including honest before-ship testing results and known limitations.
